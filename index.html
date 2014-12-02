@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang='en'>
   <head>
-    <title>Searchable Map Template Demo</title>
+    <title>FusionTable-Map-polygons-legend</title>
     <meta charset='utf-8' />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <meta content='' name='description' />
@@ -23,12 +23,11 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class='navbar-brand' href='index.html'>Searchable Map Template</a>
+          <a class='navbar-brand' href='index.html'>Template with polygons and dynamic legend</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
-            <li class='active'><a href="index.html">Map</a></li>
-            <li><a href="#">About</a></li>
+            <li class='active'><a href="http://epress.trincoll.edu/dataviz" target="_blank">Learn more from free DataViz book at Trinity College CT</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -36,7 +35,7 @@
     <div class='container-fluid'>
       <div class='row'>
         <div class='col-md-4'>
-          <p>This is a demo of <a href='http://derekeder.com'>Derek Eder's</a> <a href='http://derekeder.com/searchable_map_template/'>Searchable Map Template</a> using Google <a href='http://support.google.com/fusiontables/answer/2571232?hl=en&ref_topic=1652595'>Fusion Tables</a>. Use this section to give a little context to your map.</p>
+          <p>This is a demo</p>
           <div class='well'>
             <h4>
               Address <small>(<a id='find_me' href='#'>find me</a>)</small>
@@ -56,26 +55,61 @@
               </label>
             </p>
 
-            <br />
-            <h4>Custom filters and views</h4>
-            <p>Take a look at the <a href='https://github.com/derekeder/FusionTable-Map-Template/wiki/Filter-examples'>wiki</a> to see how to add your own custom filters and views like:</p>
-            <div class='row'>
-              <div class='col-md-6'>
-                <ul>
-                  <li><a href='https://github.com/derekeder/FusionTable-Map-Template/wiki/Filter-examples#wiki-checkboxes'>Checkboxes</a></li>
-                  <li><a href='https://github.com/derekeder/FusionTable-Map-Template/wiki/Filter-examples#wiki-radiobuttons'>Radio buttons</a></li>
-                  <li><a href='https://github.com/derekeder/FusionTable-Map-Template/wiki/Filter-examples#wiki-drop-down-lists'>Drop down lists</a></li>
-                  <li><a href='https://github.com/derekeder/FusionTable-Map-Template/wiki/Filter-examples#wiki-textsearches'>Text searches</a></li>
-                </ul>
-              </div>
-              <div class='col-md-6'>
-                <ul>
-                  <li><a href='https://github.com/derekeder/FusionTable-Map-Template/wiki/Filter-examples#wiki-sliders'>Sliders</a></li>
-                  <li><a href='https://github.com/derekeder/FusionTable-Map-Template/wiki/Filter-examples#wiki-date-sliders'>Date sliders</a></li>
-                  <li><a href='https://github.com/derekeder/FusionTable-Map-Template/wiki/List-search-results'>Results lists</a></li>
-                </ul>
-              </div>
-            </div>
+            <!--MODIFY Point layer legend heading, labels (such as Interdistrict), and colors (green, blue, yellow, red, purple) to match your data -->
+            <h4>
+              Schools (point layer)
+            </h4>
+            <ul class='inputs-list unstyled'>
+              <li>
+                <label class='checkbox inline'>
+                  <input type='checkbox' id='cbType1' />
+                  <span class='filter-box filter-green'></span>
+                  Interdistrict  <!--MODIFY to display as desired; not necessarily same as database heading -->
+                </label>
+              </li>
+              <li>
+                <label class='checkbox inline'>
+                  <input type='checkbox' id='cbType2' />
+                  <span class='filter-box filter-blue'></span>
+                  District
+                </label>
+              </li>
+              <li>
+                <label class='checkbox inline'>
+                  <input type='checkbox' id='cbType3' />
+                  <span class='filter-box filter-yellow'></span>
+                  More PreK
+                </label>
+              </li>
+            </ul>
+            <!--MODIFY Polygon layers legend heading, labels (such as Polygon layer 1) to match your data, and related items in maps_lib.js file -->
+            <h4>Census est 2008-12 (polygon layers)</h4>
+            	<ul class='inputs-list unstyled'>
+              	<ol id='polygon-legend'>
+			<li id='legend-left'></li>
+			<li id='legend-middle'></li>
+			<li id='legend-right'></li>
+	      	</ol>
+		<div class='clear'></div>
+              <li>
+                <label class='radio inline'>
+                  <input type='radio' name='types' id='rbPolygon1' checked /><!--MODIFY to remove default checked button-->
+                  Median Household Income
+                </label>
+              </li>
+              <li>
+                <label class='radio inline'>
+                  <input type='radio' name='types' id='rbPolygon2' />
+                  Unemployment Rate
+                </label>
+              </li>
+              <li>
+                <label class='radio inline'>
+                  <input type='radio' name='types' id='rbPolygonOff' />
+                  Off
+                </label>
+              </li>
+            </ul> 
             <br />
             <a class='btn btn-primary' id='search' href='#'>
               <i class='glyphicon glyphicon-search'></i>
@@ -96,9 +130,9 @@
             </div>
           </noscript>
           <div id='map_canvas'></div>
-          <p class='pull-right'>
-            <a href='http://derekeder.com/searchable_map_template/'>Searchable Map Template</a> by <a href='http://derekeder.com'>Derek Eder</a>.
-        </p>
+          <!--MODIFY link to publicly display your Google Fusion Tables data table, source, and text-->
+          <p>Data sources: <a href='https://www.google.com/fusiontables/DataSource?docid=1ga2XDlXm5uoH5Dx_jKWrMn-BgBGYsSnSRqDWBYou' target='_blank'>view point data</a> from <a href='http://smartchoices.trincoll.edu' target='_blank'>SmartChoices</a>; <a href='https://www.google.com/fusiontables/DataSource?docid=1J4icqZYUUWrjbd5QrlJWBv9Ax5LeV745AnWhNTl3#rows:id=1' target='_blank'>view Median Household Income</a> and <a href="https://www.google.com/fusiontables/DataSource?docid=1Q2x_e-In4-648ggO0KUfCzVHRlyfAAg43ZS8Y8r_#rows:id=1" target="_blank">view Unemployment data</a> from <a href="http://factfinder2.census.gov/" target="_blank">US Census, American Community Survey 5-year estimates, 2008-12</a>; Map boundaries from <a href="http://magic.lib.uconn.edu/connecticut_data.html#boundaries" target="_blank">MAGIC at UConn Libraries</a></br>
+          Visualization by <a href='http://commons.trincoll.edu/dataviz' target='_blank'>DataViz at Trinity College</a>, based on <a href='http://derekeder.com/searchable_map_template/' target='_blank'>Searchable Map Template</a> by <a href='http://derekeder.com' target='_blank'>Derek Eder</a></p>
         </div>
       </div>
     </div>
@@ -107,6 +141,7 @@
     <script type="text/javascript" src="js/bootstrap.min.js"></script>
     <script type="text/javascript" src="js/jquery.address.js"></script>
     <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false&libraries=places&v=3.17"></script>
+    <script type="text/javascript" src="js/jquery.geocomplete.min.js"></script>
     <script type="text/javascript" src="js/maps_lib.js"></script>
     <script type='text/javascript'>
       //<![CDATA[
