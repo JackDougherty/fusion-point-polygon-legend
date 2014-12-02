@@ -21,24 +21,28 @@ var MapsLib = {
 
   //the encrypted Table ID of your Fusion Table (found under File => About)
   //NOTE: numeric IDs will be deprecated soon
-  fusionTableId:      "1m4Ez9xyTGfY2CU6O-UgEcPzlS0rnzLU93e4Faa0",
+  fusionTableId:      "1ga2XDlXm5uoH5Dx_jKWrMn-BgBGYsSnSRqDWBYou", // Point layer
+  
+  polygon1TableID:    "1J4icqZYUUWrjbd5QrlJWBv9Ax5LeV745AnWhNTl3", //Median Household Income in CT Towns, ACS est 2008-12
+  polygon2TableID:    "1Q2x_e-In4-648ggO0KUfCzVHRlyfAAg43ZS8Y8r_", //Unemployment in CT towns, ACS est 2008-12
 
   //*New Fusion Tables Requirement* API key. found at https://code.google.com/apis/console/
   //*Important* this key is for demonstration purposes. please register your own.
-  googleApiKey:       "AIzaSyA3FQFrNr5W2OEVmuENqhb2MBB2JabdaOY",
+  googleApiKey:       "AIzaSyDIevSvpV-ONb4Pf15VUtwyr_zZa7ccwq4",
 
   //name of the location column in your Fusion Table.
   //NOTE: if your location column name has spaces in it, surround it with single quotes
   //example: locationColumn:     "'my location'",
   locationColumn:     "geometry",
 
-  map_centroid:       new google.maps.LatLng(41.8781136, -87.66677856445312), //center that your map defaults to
-  locationScope:      "chicago",      //geographical area appended to all address searches
+  map_centroid:       new google.maps.LatLng(41.7682,-72.684), //center that your map defaults to
+  locationScope:      "connecticut",      //geographical area appended to all address searches
   recordName:         "result",       //for showing number of results
   recordNamePlural:   "results",
 
+
   searchRadius:       805,            //in meters ~ 1/2 mile
-  defaultZoom:        11,             //zoom level when map is loaded (bigger is more zoomed in)
+  defaultZoom:        12,             //zoom level when map is loaded (bigger is more zoomed in)
   addrMarkerImage:    'images/blue-pushpin.png', // set to empty '' to hide searched address marker
   currentPinpoint:    null,
 
@@ -49,7 +53,15 @@ var MapsLib = {
     var myOptions = {
       zoom: MapsLib.defaultZoom,
       center: MapsLib.map_centroid,
-      mapTypeId: google.maps.MapTypeId.ROADMAP
+      mapTypeId: google.maps.MapTypeId.ROADMAP,
+      styles: [
+        {
+          stylers: [
+            { saturation: -100 }, // MODIFY Saturation and Lightness if needed
+            { lightness: 40 }     // Current values make thematic polygon shading stand out over base map
+          ]
+        }
+      ]
     };
     map = new google.maps.Map($("#map_canvas")[0],myOptions);
 
@@ -63,6 +75,28 @@ var MapsLib = {
     });
 
     MapsLib.searchrecords = null;
+    
+    //MODIFY to match 3-bucket GFT values of pre-checked polygon1  - see also further below
+    MapsLib.setDemographicsLabels("$25&ndash;50k", "$50&ndash;100k", "$100&ndash;215k");
+    
+    // MODIFY if needed: defines background polygon1 and polygon2 layers
+    MapsLib.polygon1 = new google.maps.FusionTablesLayer({
+      query: {
+        from:   MapsLib.polygon1TableID,
+        select: "geometry"
+      },
+      styleId: 2,
+      templateId: 2
+    });
+
+    MapsLib.polygon2 = new google.maps.FusionTablesLayer({
+      query: {
+        from:   MapsLib.polygon2TableID,
+        select: "geometry"
+      },
+      styleId: 2,
+      templateId: 2
+    });
 
     //reset filters
     $("#search_address").val(MapsLib.convertToPlainString($.address.parameter('address')));
@@ -73,7 +107,7 @@ var MapsLib = {
     $("#result_box").hide();
     
     //-----custom initializers-------
-    
+      $("#rbPolygon1").attr("checked", "checked"); 
     //-----end of custom initializers-------
 
     //run the default search
@@ -82,6 +116,20 @@ var MapsLib = {
 
   doSearch: function(location) {
     MapsLib.clearSearch();
+    
+    // MODIFY if needed: shows background polygon layer depending on which checkbox is selected
+    if ($("#rbPolygon1").is(':checked')) {
+      MapsLib.polygon1.setMap(map);
+      MapsLib.setDemographicsLabels("$25&ndash;50k", "$50&ndash;100k", "$100&ndash;215k"); //MODIFY to match 3 buckets in GFT
+    }
+    if ($("#rbPolygon2").is(':checked')) {
+      MapsLib.polygon2.setMap(map);
+      MapsLib.setDemographicsLabels("2&ndash;8%", "8&ndash;14%", "14&ndash;21%"); //MODIFY to match 3 buckets in GFT
+    }
+    if ($("#rbPolygonOff").is(':checked')) {   //the Off statement does not contain a setMap
+      MapsLib.setDemographicsLabels("&ndash;", "&ndash;", "&ndash;");
+    }
+
     var address = $("#search_address").val();
     MapsLib.searchRadius = $("#search_radius").val();
 
@@ -162,13 +210,32 @@ var MapsLib = {
     MapsLib.getCount(whereClause);
   },
 
+  // MODIFY if you change the number of Polygon layers; TRY designated PolygonOFF layer
   clearSearch: function() {
     if (MapsLib.searchrecords != null)
       MapsLib.searchrecords.setMap(null);
+    if (MapsLib.polygon1 != null)
+      MapsLib.polygon1.setMap(null);
+    if (MapsLib.polygon2 != null)
+      MapsLib.polygon2.setMap(null);
+    if (MapsLib.polygonOFF !=null)
+      MapsLib.polygonOff.setMap(null);
     if (MapsLib.addrMarker != null)
       MapsLib.addrMarker.setMap(null);
     if (MapsLib.searchRadiusCircle != null)
       MapsLib.searchRadiusCircle.setMap(null);
+  },
+
+  setDemographicsLabels: function(left, middle, right) {
+    $('#legend-left').fadeOut('fast', function(){
+      $("#legend-left").html(left);
+    }).fadeIn('fast');
+    $('#legend-middle').fadeOut('fast', function(){
+      $("#legend-middle").html(middle);
+    }).fadeIn('fast');
+    $('#legend-right').fadeOut('fast', function(){
+      $("#legend-right").html(right);
+    }).fadeIn('fast');
   },
 
   findMe: function() {
