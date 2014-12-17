@@ -4,6 +4,7 @@ a:hover { color: #4B58A6; }
 #map_canvas img {
   max-width: none;
 }
+/*empty comment
 
 /* MODIFY polygon legend colors (left, middle, right) to match 3-color buckets in your Google Fusion Table. See also http://ColorBrewer2.org*/
 #legend-left { border-top: 10px solid #FDBE85; }
