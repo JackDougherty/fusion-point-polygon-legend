@@ -21,3 +21,9 @@ http://jackdougherty.github.io/fusion-point-polygon-legend/iframe_test.html
 
 ## TO DO
 - update this template from current version of http://derekeder.com/searchable_map_template/
+
+## Sources
+ - Food establishment list from: https://data.hartford.gov/
+ - Knox community garden list from: http://doris0221.github.io/KNOX/
+ - Income data from: http://factfinder.census.gov/faces/nav/jsf/pages/index.xhtml
+ - Map created with: https://www.google.com/fusiontables/data?dsrcid=implicit
