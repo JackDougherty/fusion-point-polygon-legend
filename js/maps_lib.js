@@ -136,7 +136,23 @@ var MapsLib = {
     var whereClause = MapsLib.locationColumn + " not equal to ''";
 
     //-----custom filters-------
+    
+var type_column = "'Type'";
+        var searchType = type_column + " IN (-1,";
+        if ( $("#cbType1").is(':checked')) searchType += "1,";
+        if ( $("#cbType2").is(':checked')) searchType += "2,";
+        if ( $("#cbType3").is(':checked')) searchType += "3,";
+        self.whereClause += " AND " + searchType.slice(0, searchType.length - 1) + ")";
 
+        //---TO DO: FIX -- EDIT column header and values below to match your Google Fusion Table AND index.html
+        //-- TEXTUAL OPTION to display legend and filter by non-numerical data in your table
+        // var type_column = "TypeText";  // -- note use of single & double quotes for two-word column header
+        // var tempWhereClause = [];
+        // if ( $("#cbType1").is(':checked')) tempWhereClause.push("District");
+        // if ( $("#cbType2").is(':checked')) tempWhereClause.push("Magnet");
+        // if ( $("#cbType3").is(':checked')) tempWhereClause.push("Charter");
+        // whereClause += " AND " + type_column + " IN ('" + tempWhereClause.join("','") + "')";
+        
     //-------end of custom filters--------
 
     if (address != "") {
