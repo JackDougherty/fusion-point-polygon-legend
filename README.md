@@ -1,7 +1,7 @@
 fusion-point-polygon-legend
 ===============================
 
-Searchable point and polygon layer map, with dynamic legend, using Google Maps and Fusion Tables
+Searchable Map Template with point and polygon layers, with dynamic legend, using Google Fusion Tables. Based on Derek Eder's Searchable Map Template v1.3 http://derekeder.com/searchable_map_template/
 
 ## Demo
 http://jackdougherty.github.io/fusion-point-polygon-legend
@@ -16,4 +16,4 @@ http://jackdougherty.github.io/fusion-point-polygon-legend/iframe_test.html
 - See tutorial in Fusion Tables templates section of *Data Visualization for All* book at http://DataVizForAll.org
 
 ## TO DO
-- update this template from current version of http://derekeder.com/searchable_map_template/
+- update to v1.4 of Derek's template http://derekeder.com/searchable_map_template/

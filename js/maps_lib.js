@@ -21,8 +21,8 @@ var MapsLib = {
 
   //the encrypted Table ID of your Fusion Table (found under File => About)
   //NOTE: numeric IDs will be deprecated soon
-  fusionTableId:      "1ga2XDlXm5uoH5Dx_jKWrMn-BgBGYsSnSRqDWBYou", // Point layer
-  
+  fusionTableId:      "1FMjVRb16OqlkeodL7onaQ5A7jamtpSY0TmHaa-WQ", // Point layer of CT schools
+
   polygon1TableID:    "1J4icqZYUUWrjbd5QrlJWBv9Ax5LeV745AnWhNTl3", //Median Household Income in CT Towns, ACS est 2008-12
   polygon2TableID:    "1Q2x_e-In4-648ggO0KUfCzVHRlyfAAg43ZS8Y8r_", //Unemployment in CT towns, ACS est 2008-12
 
@@ -33,7 +33,7 @@ var MapsLib = {
   //name of the location column in your Fusion Table.
   //NOTE: if your location column name has spaces in it, surround it with single quotes
   //example: locationColumn:     "'my location'",
-  locationColumn:     "geometry",
+  locationColumn:     "Address",
 
   map_centroid:       new google.maps.LatLng(41.7682,-72.684), //center that your map defaults to
   locationScope:      "connecticut",      //geographical area appended to all address searches
@@ -75,10 +75,10 @@ var MapsLib = {
     });
 
     MapsLib.searchrecords = null;
-    
+
     //MODIFY to match 3-bucket GFT values of pre-checked polygon1  - see also further below
     MapsLib.setDemographicsLabels("$25&ndash;50k", "$50&ndash;100k", "$100&ndash;215k");
-    
+
     // MODIFY if needed: defines background polygon1 and polygon2 layers
     MapsLib.polygon1 = new google.maps.FusionTablesLayer({
       query: {
@@ -105,9 +105,9 @@ var MapsLib = {
     else $("#search_radius").val(MapsLib.searchRadius);
     $(":checkbox").prop("checked", "checked");
     $("#result_box").hide();
-    
+
     //-----custom initializers-------
-      $("#rbPolygon1").attr("checked", "checked"); 
+      $("#rbPolygon1").attr("checked", "checked");
     //-----end of custom initializers-------
 
     //run the default search
@@ -116,7 +116,7 @@ var MapsLib = {
 
   doSearch: function(location) {
     MapsLib.clearSearch();
-    
+
     // MODIFY if needed: shows background polygon layer depending on which checkbox is selected
     if ($("#rbPolygon1").is(':checked')) {
       MapsLib.polygon1.setMap(map);
@@ -137,6 +137,15 @@ var MapsLib = {
 
     //-----custom filters-------
 
+    //-- NUMERICAL OPTION - to display and filter a column of numerical data in your table, use this instead
+    var type_column = "'TypeNum'";
+    var searchType = type_column + " IN (-1,";
+    if ( $("#cbType1").is(':checked')) searchType += "1,";
+    if ( $("#cbType2").is(':checked')) searchType += "2,";
+    if ( $("#cbType3").is(':checked')) searchType += "3,";
+    if ( $("#cbType4").is(':checked')) searchType += "4,";
+    if ( $("#cbType5").is(':checked')) searchType += "5,";
+    whereClause += " AND " + searchType.slice(0, searchType.length - 1) + ")";
     //-------end of custom filters--------
 
     if (address != "") {
@@ -150,7 +159,7 @@ var MapsLib = {
           $.address.parameter('address', encodeURIComponent(address));
           $.address.parameter('radius', encodeURIComponent(MapsLib.searchRadius));
           map.setCenter(MapsLib.currentPinpoint);
-          
+
           // set zoom level based on search radius
           if (MapsLib.searchRadius      >= 1610000) map.setZoom(4); // 1,000 miles
           else if (MapsLib.searchRadius >= 805000)  map.setZoom(5); // 500 miles
@@ -284,33 +293,33 @@ var MapsLib = {
   },
 
   query: function(query_opts, callback) {
-    
+
     var queryStr = [];
     queryStr.push("SELECT " + query_opts.select);
     queryStr.push(" FROM " + MapsLib.fusionTableId);
-    
+
     // where, group and order clauses are optional
     if (query_opts.where && query_opts.where != "") {
       queryStr.push(" WHERE " + query_opts.where);
     }
-    
+
     if (query_opts.groupBy && query_opts.roupBy != "") {
       queryStr.push(" GROUP BY " + query_opts.groupBy);
     }
-    
+
     if (query_opts.orderBy && query_opts.orderBy != "" ) {
       queryStr.push(" ORDER BY " + query_opts.orderBy);
     }
-    
+
     if (query_opts.offset && query_opts.offset !== "") {
       queryStr.push(" OFFSET " + query_opts.offset);
     }
-    
+
     if (query_opts.limit && query_opts.limit !== "") {
       queryStr.push(" LIMIT " + query_opts.limit);
     }
 
-    
+
 
     var sql = encodeURIComponent(queryStr.join(" "));
     $.ajax({
@@ -336,8 +345,8 @@ var MapsLib = {
 
   getCount: function(whereClause) {
     var selectColumns = "Count()";
-    MapsLib.query({ 
-      select: selectColumns, 
+    MapsLib.query({
+      select: selectColumns,
       where: whereClause
     }, function(response) {
       MapsLib.displaySearchCount(response);
@@ -381,10 +390,10 @@ var MapsLib = {
     if (text == undefined) return '';
   	return decodeURIComponent(text);
   }
-  
+
   //-----custom functions-------
   // NOTE: if you add custom functions, make sure to append each one with a comma, except for the last one.
   // This also applies to the convertToPlainString function above
-  
+
   //-----end of custom functions-------
 }

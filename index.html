@@ -1,137 +1,151 @@
 <!DOCTYPE html>
 <html lang='en'>
-  <head>
-    <title>FusionTable-Map-polygons-legend</title>
-    <meta charset='utf-8' />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <meta content='' name='description' />
-    <meta content='' name='author' />
-    <!-- Styles -->
-    <link rel="stylesheet" href="css/bootstrap.min.css"/>
-    <link rel="stylesheet" href="css/custom.css"/>
-    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
-    <!--[if lt IE 9]>
-      <script type="text/javascript" src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-  </head>
-  <body>
-    <div class='navbar navbar-default navbar-static-top'>
-      <div class='container-fluid'>
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class='navbar-brand' href='index.html'>Template with polygons and dynamic legend</a>
-        </div>
-        <div class="navbar-collapse collapse">
-          <ul class="nav navbar-nav navbar-right">
-            <li class='active'><a href="http://epress.trincoll.edu/dataviz" target="_blank">Learn more from free DataViz book at Trinity College CT</a></li>
-          </ul>
-        </div><!--/.nav-collapse -->
-      </div>
-    </div>
+<head>
+  <title>fusion-point-polygon-legend</title>
+  <meta charset='utf-8' />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta content='' name='description' />
+  <meta content='' name='author' />
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/bootstrap.min.css"/>
+  <link rel="stylesheet" href="css/custom.css"/>
+  <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+  <!--[if lt IE 9]>
+  <script type="text/javascript" src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+</head>
+<body>
+  <div class='navbar navbar-default navbar-static-top'>
     <div class='container-fluid'>
-      <div class='row'>
-        <div class='col-md-4'>
-          <p>This is a demo</p>
-          <div class='well'>
-            <h4>
-              Address <small>(<a id='find_me' href='#'>find me</a>)</small>
-            </h4>
-            <p>
-              <input class='form-control' id='search_address' placeholder='Enter an address or an intersection' type='text' />
-            </p>
-            <p>
-              <label>
-                within
-                <select id='search_radius'>
-                  <option value='400'>2 blocks</option>
-                  <option value='805'>1/2 mile</option>
-                  <option value='1610'>1 mile</option>
-                  <option value='3220'>2 miles</option>
-                </select>
-              </label>
-            </p>
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class='navbar-brand' href='index.html'>Searchable Map Template v1.3 fusion-point-polygon-legend</a>
+      </div>
+      <div class="navbar-collapse collapse">
+        <ul class="nav navbar-nav navbar-right">
+          <li class='active'><a href="http://datavizforall.org">Learn more at DataVizForAll.org</a></li>
+        </ul>
+      </div><!--/.nav-collapse -->
+    </div>
+  </div>
+  <div class='container-fluid'>
+    <div class='row'>
+      <div class='col-md-4'>
+        <p>View <a href="https://github.com/jackdougherty/fusion-point-polygon-legend">fusion-point-polygon-legend code on GitHub</a>, with polygon layer dynamic legend. Based on <a href='http://derekeder.com/searchable_map_template/'>Searchable Map Template v1.3</a> by <a href='http://derekeder.com'>Derek Eder</a> with <a href='http://support.google.com/fusiontables/answer/2571232?hl=en&ref_topic=1652595'>Google Fusion Tables</a></p>
+        <div class='well'>
+          <h4>
+            Address <small>(<a id='find_me' href='#'>find me</a>)</small>
+          </h4>
+          <p>
+            <input class='form-control' id='search_address' placeholder='Enter an address or an intersection' type='text' />
+          </p>
+          <p>
+            <label>
+              within
+              <select id='search_radius'>
+                <option value='400'>2 blocks</option>
+                <option value='805'>1/2 mile</option>
+                <option value='1610'>1 mile</option>
+                <option value='3220'>2 miles</option>
+              </select>
+            </label>
+          </p>
 
-            <!--MODIFY Point layer legend heading, labels (such as Interdistrict), and colors (green, blue, yellow, red, purple) to match your data -->
-            <h4>
-              Schools (point layer)
-            </h4>
-            <ul class='inputs-list unstyled'>
-              <li>
-                <label class='checkbox inline'>
-                  <input type='checkbox' id='cbType1' />
-                  <span class='filter-box filter-green'></span>
-                  Interdistrict  <!--MODIFY to display as desired; not necessarily same as database heading -->
-                </label>
-              </li>
-              <li>
-                <label class='checkbox inline'>
-                  <input type='checkbox' id='cbType2' />
-                  <span class='filter-box filter-blue'></span>
-                  District
-                </label>
-              </li>
-              <li>
-                <label class='checkbox inline'>
-                  <input type='checkbox' id='cbType3' />
-                  <span class='filter-box filter-yellow'></span>
-                  More PreK
-                </label>
-              </li>
-            </ul>
-            <!--MODIFY Polygon layers legend heading, labels (such as Polygon layer 1) to match your data, and related items in maps_lib.js file -->
-            <h4>Census est 2008-12 (polygon layers)</h4>
-            	<ul class='inputs-list unstyled'>
-              	<ol id='polygon-legend'>
-			<li id='legend-left'></li>
-			<li id='legend-middle'></li>
-			<li id='legend-right'></li>
-	      	</ol>
-		<div class='clear'></div>
-              <li>
-                <label class='radio inline'>
-                  <input type='radio' name='types' id='rbPolygon1' checked /><!--MODIFY to remove default checked button-->
-                  Median Household Income
-                </label>
-              </li>
-              <li>
-                <label class='radio inline'>
-                  <input type='radio' name='types' id='rbPolygon2' />
-                  Unemployment Rate
-                </label>
-              </li>
-              <li>
-                <label class='radio inline'>
-                  <input type='radio' name='types' id='rbPolygonOff' />
-                  Off
-                </label>
-              </li>
-            </ul> 
-            <br />
-            <a class='btn btn-primary' id='search' href='#'>
-              <i class='glyphicon glyphicon-search'></i>
-              Search
-            </a>
-            <a class='btn btn-default' id='reset' href='#'>
-              <i class='glyphicon glyphicon-repeat'></i>
-              Reset
-            </a>
-          </div>
-          <div class='alert alert-info' id='result_box' ><strong id='result_count'></strong></div>
+          <!--MODIFY Point layer legend heading, labels (such as Interdistrict), and colors (green, blue, yellow, red, purple) to match your data -->
+          <h4>
+            CT Schools 2014-15 (point layer)
+          </h4>
+          <ul class='inputs-list unstyled'>
+            <li>
+              <label class='checkbox inline'>
+                <input type='checkbox' id='cbType1' />
+                <span class='filter-box filter-blue'></span>
+                District Schools
+              </label>
+            </li>
+            <li>
+              <label class='checkbox inline'>
+                <input type='checkbox' id='cbType2' />
+                <span class='filter-box filter-green'></span>
+                Interdistrict Magnets
+              </label>
+            </li>
+            <li>
+              <label class='checkbox inline'>
+                <input type='checkbox' id='cbType3' />
+                <span class='filter-box filter-red'></span>
+                Charter Schools
+              </label>
+            </li>
+            <li>
+              <label class='checkbox inline'>
+                <input type='checkbox' id='cbType4' />
+                <span class='filter-box filter-purple'></span>
+                Technical Schools
+              </label>
+            </li>
+            <li>
+              <label class='checkbox inline'>
+                <input type='checkbox' id='cbType5' />
+                <span class='filter-box filter-yellow'></span>
+                Other Public Schools
+              </label>
+            </li>
+          </ul>
+          <!--MODIFY Polygon layers legend heading, labels (such as Polygon layer 1) to match your data, and related items in maps_lib.js file -->
+          <h4>Census Est 2008-12 (polygon layers)</h4>
+          <ul class='inputs-list unstyled'>
+            <ol id='polygon-legend'>
+              <li id='legend-left'></li>
+              <li id='legend-middle'></li>
+              <li id='legend-right'></li>
+            </ol>
+            <div class='clear'></div>
+            <li>
+              <label class='radio inline'>
+                <input type='radio' name='types' id='rbPolygon1' checked /><!--MODIFY to remove default checked button-->
+                Median Household Income
+              </label>
+            </li>
+            <li>
+              <label class='radio inline'>
+                <input type='radio' name='types' id='rbPolygon2' />
+                Unemployment Rate
+              </label>
+            </li>
+            <li>
+              <label class='radio inline'>
+                <input type='radio' name='types' id='rbPolygonOff' />
+                Off
+              </label>
+            </li>
+          </ul>
+          <br />
+          <a class='btn btn-primary' id='search' href='#'>
+            <i class='glyphicon glyphicon-search'></i>
+            Search
+          </a>
+          <a class='btn btn-default' id='reset' href='#'>
+            <i class='glyphicon glyphicon-repeat'></i>
+            Reset
+          </a>
         </div>
-        <div class='col-md-8'>
-          <noscript>
-            <div class='alert alert-info'>
-              <h4>Your JavaScript is disabled</h4>
-              <p>Please enable JavaScript to view the map.</p>
-            </div>
-          </noscript>
-          <div id='map_canvas'></div>
-          <!--MODIFY link to publicly display your Google Fusion Tables data table, source, and text-->
-          <p>Data sources: <a href='https://www.google.com/fusiontables/DataSource?docid=1ga2XDlXm5uoH5Dx_jKWrMn-BgBGYsSnSRqDWBYou' target='_blank'>view point data</a> from <a href='http://smartchoices.trincoll.edu' target='_blank'>SmartChoices</a>; <a href='https://www.google.com/fusiontables/DataSource?docid=1J4icqZYUUWrjbd5QrlJWBv9Ax5LeV745AnWhNTl3#rows:id=1' target='_blank'>view Median Household Income</a> and <a href="https://www.google.com/fusiontables/DataSource?docid=1Q2x_e-In4-648ggO0KUfCzVHRlyfAAg43ZS8Y8r_#rows:id=1" target="_blank">view Unemployment data</a> from <a href="http://factfinder2.census.gov/" target="_blank">US Census, American Community Survey 5-year estimates, 2008-12</a>; Map boundaries from <a href="http://magic.lib.uconn.edu/connecticut_data.html#boundaries" target="_blank">MAGIC at UConn Libraries</a></br>
+        <div class='alert alert-info' id='result_box' ><strong id='result_count'></strong></div>
+      </div>
+      <div class='col-md-8'>
+        <noscript>
+          <div class='alert alert-info'>
+            <h4>Your JavaScript is disabled</h4>
+            <p>Please enable JavaScript to view the map.</p>
+          </div>
+        </noscript>
+        <div id='map_canvas'></div>
+        <!--MODIFY link to publicly display your Google Fusion Tables data table, source, and text-->
+        <p>Sources: <a href='https://www.google.com/fusiontables/DataSource?docid=1FMjVRb16OqlkeodL7onaQ5A7jamtpSY0TmHaa-WQ#rows:id=1'>View CT Public Schools 2014-15</a> from <a href='https://data.ct.gov/Education/Education-Directory/9k2y-kqxn'>CT Open Data</a>; <a href='https://www.google.com/fusiontables/DataSource?docid=1J4icqZYUUWrjbd5QrlJWBv9Ax5LeV745AnWhNTl3#rows:id=1'>view Median Household Income</a> and <a href="https://www.google.com/fusiontables/DataSource?docid=1Q2x_e-In4-648ggO0KUfCzVHRlyfAAg43ZS8Y8r_#rows:id=1">view Unemployment data</a> from <a href="http://factfinder2.census.gov/">US Census, American Community Survey 5-year estimates, 2008-12</a>; Map boundaries from <a href="http://magic.lib.uconn.edu/connecticut_data.html#boundaries">MAGIC at UConn Libraries</a></br>
           Visualization by <a href='http://commons.trincoll.edu/dataviz' target='_blank'>DataViz at Trinity College</a>, based on <a href='http://derekeder.com/searchable_map_template/' target='_blank'>Searchable Map Template</a> by <a href='http://derekeder.com' target='_blank'>Derek Eder</a></p>
         </div>
       </div>
@@ -144,54 +158,54 @@
     <script type="text/javascript" src="js/jquery.geocomplete.min.js"></script>
     <script type="text/javascript" src="js/maps_lib.js"></script>
     <script type='text/javascript'>
-      //<![CDATA[
-        $(window).resize(function () {
-          var h = $(window).height(),
-            offsetTop = 105; // Calculate the top offset
-        
-          $('#map_canvas').css('height', (h - offsetTop));
-        }).resize();
-        
-        $(function() {
-          MapsLib.initialize();
-          var autocomplete = new google.maps.places.Autocomplete(document.getElementById('search_address'));
-      
-          $(':checkbox').click(function(){
-            MapsLib.doSearch();
-          });
+    //<![CDATA[
+    $(window).resize(function () {
+      var h = $(window).height(),
+      offsetTop = 105; // Calculate the top offset
 
-          $(':radio').click(function(){
-            MapsLib.doSearch();
-          });
-          
-          $('#search_radius').change(function(){
-            MapsLib.doSearch();
-          });
-          
-          $('#search').click(function(){
-            MapsLib.doSearch();
-          });
-          
-          $('#find_me').click(function(){
-            MapsLib.findMe(); 
-            return false;
-          });
-          
-          $('#reset').click(function(){
-            $.address.parameter('address','');
-            MapsLib.initialize(); 
-            return false;
-          });
-          
-          $(":text").keydown(function(e){
-              var key =  e.keyCode ? e.keyCode : e.which;
-              if(key == 13) {
-                  $('#search').click();
-                  return false;
-              }
-          });
-        });
-      //]]>
+      $('#map_canvas').css('height', (h - offsetTop));
+    }).resize();
+
+    $(function() {
+      MapsLib.initialize();
+      var autocomplete = new google.maps.places.Autocomplete(document.getElementById('search_address'));
+
+      $(':checkbox').click(function(){
+        MapsLib.doSearch();
+      });
+
+      $(':radio').click(function(){
+        MapsLib.doSearch();
+      });
+
+      $('#search_radius').change(function(){
+        MapsLib.doSearch();
+      });
+
+      $('#search').click(function(){
+        MapsLib.doSearch();
+      });
+
+      $('#find_me').click(function(){
+        MapsLib.findMe();
+        return false;
+      });
+
+      $('#reset').click(function(){
+        $.address.parameter('address','');
+        MapsLib.initialize();
+        return false;
+      });
+
+      $(":text").keydown(function(e){
+        var key =  e.keyCode ? e.keyCode : e.which;
+        if(key == 13) {
+          $('#search').click();
+          return false;
+        }
+      });
+    });
+    //]]>
     </script>
   </body>
-</html>
+  </html>
